@@ -1,0 +1,316 @@
+{
+  "Background": {
+    "Image": {
+      "X": 0,
+      "Y": 0,
+      "ImageIndex": 0
+    }
+  },
+  "Time": {
+    "Hours": {
+      "Tens": {
+        "X": 13,
+        "Y": 57,
+        "ImageIndex": 1,
+        "ImagesCount": 10
+      },
+      "Ones": {
+        "X": 40,
+        "Y": 57,
+        "ImageIndex": 1,
+        "ImagesCount": 10
+      }
+    },
+    "Minutes": {
+      "Tens": {
+        "X": 76,
+        "Y": 57,
+        "ImageIndex": 1,
+        "ImagesCount": 10
+      },
+      "Ones": {
+        "X": 103,
+        "Y": 57,
+        "ImageIndex": 1,
+        "ImagesCount": 10
+      }
+    }
+  },
+  "Activity": {
+    "Steps": {
+      "TopLeftX": 17,
+      "TopLeftY": 151,
+      "BottomRightX": 83,
+      "BottomRightY": 169,
+      "Alignment": "TopRight",
+      "Spacing": 3,
+      "ImageIndex": 11,
+      "ImagesCount": 10
+    },
+    "Pulse": {
+      "TopLeftX": 130,
+      "TopLeftY": 68,
+      "BottomRightX": 166,
+      "BottomRightY": 86,
+      "Alignment": "TopRight",
+      "Spacing": 2,
+      "ImageIndex": 11,
+      "ImagesCount": 10
+    },
+    "Distance": {
+      "Number": {
+        "TopLeftX": 45,
+        "TopLeftY": 135,
+        "BottomRightX": 85,
+        "BottomRightY": 148,
+        "Alignment": "TopRight",
+        "Spacing": 1,
+        "ImageIndex": 21,
+        "ImagesCount": 10
+      },
+      "SuffixImageIndex": 31,
+      "DecimalPointImageIndex": 32
+    }
+  },
+  "Date": {
+    "MonthAndDay": {
+      "Separate": {
+        "Month": {
+          "TopLeftX": 108,
+          "TopLeftY": 29,
+          "BottomRightX": 132,
+          "BottomRightY": 47,
+          "Alignment": "TopRight",
+          "Spacing": 3,
+          "ImageIndex": 11,
+          "ImagesCount": 10
+        },
+        "Day": {
+          "TopLeftX": 142,
+          "TopLeftY": 29,
+          "BottomRightX": 166,
+          "BottomRightY": 47,
+          "Alignment": "TopRight",
+          "Spacing": 3,
+          "ImageIndex": 11,
+          "ImagesCount": 10
+        }
+      },
+      "TwoDigitsMonth": true,
+      "TwoDigitsDay": true
+    },
+    "WeekDay": {
+      "X": 4,
+      "Y": 4,
+      "ImageIndex": 33,
+      "ImagesCount": 7
+    }
+  },
+  "Weather": {
+    "Icon": {
+      "Coordinates": {
+        "X": 136,
+        "Y": 108
+      }
+    },
+    "Temperature": {
+      "Current": {
+        "Number": {
+          "TopLeftX": 117,
+          "TopLeftY": 141,
+          "BottomRightX": 161,
+          "BottomRightY": 167,
+          "Alignment": "TopRight",
+          "Spacing": 2,
+          "ImageIndex": 40,
+          "ImagesCount": 10
+        },
+        "MinusImageIndex": 50,
+        "DegreesImageIndex": 51
+      },
+      "Today": {
+        "Separate": {
+          "Day": {
+            "Number": {
+              "TopLeftX": 93,
+              "TopLeftY": 137,
+              "BottomRightX": 121,
+              "BottomRightY": 150,
+              "Alignment": "TopRight",
+              "Spacing": 1,
+              "ImageIndex": 21,
+              "ImagesCount": 10
+            },
+            "MinusImageIndex": 52,
+            "DegreesImageIndex": 53
+          },
+          "Night": {
+            "Number": {
+              "TopLeftX": 93,
+              "TopLeftY": 156,
+              "BottomRightX": 121,
+              "BottomRightY": 169,
+              "Alignment": "TopRight",
+              "Spacing": 1,
+              "ImageIndex": 21,
+              "ImagesCount": 10
+            },
+            "MinusImageIndex": 52,
+            "DegreesImageIndex": 53
+          }
+        }
+      }
+    },
+    "AirPollution": {
+      "Icon": {
+        "X": 105,
+        "Y": 109,
+        "ImageIndex": 54,
+        "ImagesCount": 6
+      }
+    }
+  },
+  "StepsProgress": {
+    "Linear": {
+      "StartImageIndex": 60,
+      "Segments": [
+        {
+          "X": 0,
+          "Y": 172
+        },
+        {
+          "X": 11,
+          "Y": 172
+        },
+        {
+          "X": 22,
+          "Y": 172
+        },
+        {
+          "X": 33,
+          "Y": 172
+        },
+        {
+          "X": 44,
+          "Y": 172
+        },
+        {
+          "X": 55,
+          "Y": 172
+        },
+        {
+          "X": 66,
+          "Y": 172
+        },
+        {
+          "X": 77,
+          "Y": 172
+        },
+        {
+          "X": 88,
+          "Y": 172
+        },
+        {
+          "X": 99,
+          "Y": 172
+        },
+        {
+          "X": 110,
+          "Y": 172
+        },
+        {
+          "X": 121,
+          "Y": 172
+        },
+        {
+          "X": 132,
+          "Y": 172
+        },
+        {
+          "X": 143,
+          "Y": 172
+        },
+        {
+          "X": 154,
+          "Y": 172
+        },
+        {
+          "X": 165,
+          "Y": 172
+        }
+      ]
+    }
+  },
+  "Status": {
+    "Bluetooth": {
+      "Coordinates": {
+        "X": 85,
+        "Y": 107
+      },
+      "ImageIndexOn": 76,
+      "ImageIndexOff": 77
+    },
+    "Alarm": {
+      "Coordinates": {
+        "X": 114,
+        "Y": 13
+      },
+      "ImageIndexOn": 78
+    },
+    "Lock": {
+      "Coordinates": {
+        "X": 133,
+        "Y": 13
+      },
+      "ImageIndexOn": 79
+    },
+    "DoNotDisturb": {
+      "Coordinates": {
+        "X": 151,
+        "Y": 13
+      },
+      "ImageIndexOn": 80
+    }
+  },
+  "Battery": {
+    "Text": {
+      "TopLeftX": 13,
+      "TopLeftY": 105,
+      "BottomRightX": 38,
+      "BottomRightY": 118,
+      "Alignment": "TopRight",
+      "Spacing": 1,
+      "ImageIndex": 21,
+      "ImagesCount": 10
+    },
+    "Scale": {
+      "StartImageIndex": 81,
+      "Segments": [
+        {
+          "X": 56,
+          "Y": 107
+        },
+        {
+          "X": 59,
+          "Y": 107
+        },
+        {
+          "X": 62,
+          "Y": 107
+        },
+        {
+          "X": 65,
+          "Y": 107
+        },
+        {
+          "X": 68,
+          "Y": 107
+        },
+        {
+          "X": 71,
+          "Y": 107
+        }
+      ]
+    }
+  }
+}
