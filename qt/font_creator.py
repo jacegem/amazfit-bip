@@ -40,14 +40,15 @@ class FontCreator(QDialog):
 
         donate1 = QPushButton('$1')
         sizePolicy = QSizePolicy()
-        sizePolicy.setHorizontalStretch(1)
-        sizePolicy.setVerticalStretch(1)
+        sizePolicy.setHorizontalStretch(10)
+        sizePolicy.setVerticalStretch(10)
+        # sizePolicy.setHorizontalStretch(1)
+        # sizePolicy.setWidthForHeight(True)
         donate1.setSizePolicy(sizePolicy)
 
         donate5 = QPushButton('$5')
         donate10 = QPushButton('$10')
         donateLayout = QGridLayout()
-        donateLayout.setRowStretch(1, 1)
         donateLayout.addWidget(donate1, 0, 0)
         donateLayout.addWidget(donate5, 1, 0)
         donateLayout.addWidget(donate10, 2, 0)
