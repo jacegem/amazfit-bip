@@ -39,6 +39,21 @@ There's a comparison of deployment tools [here](http://docs.python-guide.org/en/
 - ft  파일 선택
 - 시작 버튼
 
+- 체크박스 / delete bmp files
+
 ### 상태 바
 
 - 현재 진행중 (1/4) 변환 파일 명 / 패키징 /
+
+
+## display markdown
+
+```python
+from IPython.display import display, Markdown, Latex
+display(Markdown('*some markdown* $\phi$'))
+# If you particularly want to display maths, this is more direct:
+display(Latex('\phi'))
+```
+
+
+
