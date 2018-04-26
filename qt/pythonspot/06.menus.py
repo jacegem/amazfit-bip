@@ -32,6 +32,10 @@ class App(QMainWindow):
         exitButton.triggered.connect(self.close)
         fileMenu.addAction(exitButton)
 
+        btn = QPushButton('text')
+        btn.move(100, 70)
+         # self.setLayout(btn)
+
         self.show()
 
 

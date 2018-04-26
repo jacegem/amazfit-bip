@@ -22,15 +22,7 @@ class App(QDialog):
         windowLayout = QVBoxLayout()
         windowLayout.addWidget(self.horizontalGroupBox)
 
-        layout = QGridLayout()
-        layout.setColumnStretch(1, 40)
-        layout.setColumnStretch(2, 4)
-
-        windowLayout.addWidget(layout)
-
-
         self.setLayout(windowLayout)
-
         self.show()
 
     def createGridLayout(self):
