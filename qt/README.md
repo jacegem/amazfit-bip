@@ -63,3 +63,63 @@ display(Latex('\phi'))
 
 
 
+
+```python
+pyinstaller --onefile font_creator.py
+```
+`
+
+## How to include GUI images with PyInstaller.
+https://www.reddit.com/r/learnpython/comments/4kjie3/how_to_include_gui_images_with_pyinstaller/
+
+```
+How to include GUI images with Pyinstaller? (self.learnpython)
+
+submitted 1 년 전에 by diggity801
+
+Hello,
+
+I'm trying to convert a .py file to an .exe using Pyinstaller. I am able to do so but I cannot get the images to show up on the executable. How do I bundle an image with Pyinstaller and then refer to that image inside of the script?
+
+Almost all of the help topics I found are talking about the icon file which I do not care about and doesn't seem to be imported the same way.
+
+So far I have added the following line to the .spec file and no errors are generated when I package as an EXE:
+
+a.datas += [('C:\Python34\Scripts\image.jpg','final')]
+
+Although the jpg seemed to be bundled in the exe im not sure how I can refer to it from within the Python script.
+
+Any help would be appreciated.
+
+댓글 2추천하기보관하기숨기기신고하기
+댓글 2개
+정렬: 최고 인기
+
+Want to add to the discussion?
+Post a comment!
+
+
+[–]diggity801[S] 2 점 1 년 전에
+I figured it out myself, no thanks to any official documentation. This was way more difficult than it should have been.
+
+Step 1: Add function at beginning of script to refer to image inside of Pyinstaller exe.
+
+ def resource_path(relative_path):
+     if hasattr(sys, '_MEIPASS'):
+         return os.path.join(sys._MEIPASS, relative_path)
+     return os.path.join(os.path.abspath("."), relative_path)
+Step 2: Create and edit .spec file to point to the .jpg or whatever picture you want on a local drive.
+
+a.datas += [ ('picture.jpg', '.\\picture.jpg', 'DATA')]'
+Step 3: Use resource_path function to refer to picture inside script.
+
+self.label.setPixmap(QtGui.QPixmap(resource_path("picture.jpg")))
+Step 4: Build EXE using Pyinstaller and edited spec file.
+
+pyinstaller.exe --specpath c:\program.spec
+댓글 주소로 가기embed보관하기골드 주기
+
+[–]DtotheJtotheH 2 점 1 년 전에
+Thanks a ton for posting the solution. Helped me out a t
+```
+

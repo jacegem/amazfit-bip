@@ -1,10 +1,12 @@
 import sys
+import os
 
 from PyQt5.QtWidgets import (QApplication, QDesktopWidget, QGridLayout, QGroupBox, QWidget, QFileDialog, QLabel, QLineEdit, QMessageBox, QSpinBox,
                              QPushButton)
+from PyQt5.QtGui import QIcon
 
 from qt.button import DonateButton, FullButton
-
+from qt.ttf2bmp import runtest
 
 class FontCreator(QWidget):
     def __init__(self):
@@ -16,6 +18,7 @@ class FontCreator(QWidget):
         self.height = 300
         self.initUI()
         self.center()
+
 
     def center(self):
         # geometry of the main window
@@ -33,6 +36,8 @@ class FontCreator(QWidget):
         self.setMinimumHeight(self.height)
 
         self.setLayout(self.createGridLayout())
+        icon = QIcon(resource_path('assets/font.png'))
+        self.setWindowIcon(icon)
         self.show()
 
     # Open an image file.
@@ -152,18 +157,23 @@ class FontCreator(QWidget):
             target.setText("No file was selected. Please select an image.")
 
     def create_font(self):
+        print('run test from main')
+        runtest()
+
+
         # TODO: 필요한 정보가 있는지 확인한다.
         # 폰트파일, 압축해제폴더, 패킹파일위치, 패킹파일명,
-        self.font_path
-        self.bmp_path
-        self.pack_path
-        self.pack_file_name
-        # 옵션, BMP 폴더 삭제, 기존 파일 덮어쓰기
-        self.delete_bmp_folder
-        self.overwrite_bmp_file
+        # self.font_path
+        # self.bmp_path
+        # self.pack_path
+        # self.pack_file_name
+        # # 옵션, BMP 폴더 삭제, 기존 파일 덮어쓰기
+        # self.delete_bmp_folder
+        # self.overwrite_bmp_file
 
         # TODO: run thread, and disable other buttons.
         # TODO: when it finished, enable buttons.
+
 
     #     self.showdialog()
     #
@@ -184,8 +194,15 @@ class FontCreator(QWidget):
     # def msgbtn(self, i):
     #     print("Button pressed is:", i.text())
 
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     creator = FontCreator()
     sys.exit(app.exec_())
+
+#TODO: venv 로 용량을 줄인다.
+

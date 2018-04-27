@@ -108,14 +108,17 @@ def create_bmp_range(ttf_path, directory_path):
         create_bmp_one(i, font)
 
     #TODO: 생성이 끝나면, 폰트로 패킹한다.
-    pack(directory_path)
+    # pack(directory_path)
 
+
+def runtest():
+    print('run in ttf2bmp file')
 
 if __name__ == '__main__':
     print("글꼴 불러오는 중...")
     # fontPath = 'nns.ttf'
     fontPath = 'malgunsl.ttf'
-    ttfont = TTFont(fontPath)  # specify the path to the font in question
-
-    font = ImageFont.truetype(fontPath, 15)
-    printAllRange(all_range, font, ttfont)
+    # ttfont = TTFont(fontPath)  # specify the path to the font in question
+    #
+    # font = ImageFont.truetype(fontPath, 15)
+    # printAllRange(all_range, font, ttfont)
