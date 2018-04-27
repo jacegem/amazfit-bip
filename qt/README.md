@@ -56,5 +56,10 @@ display(Latex('\phi'))
 ```
 
 
+## 참고
 
-https://stackoverflow.com/questions/45100018/increase-height-of-qpushbutton-in-pyqt
+- https://stackoverflow.com/questions/45100018/increase-height-of-qpushbutton-in-pyqt
+- https://github.com/kenwaldek/pythonprogramming/blob/pythonprogramming/pyqt5_lesson_15.py
+
+
+
