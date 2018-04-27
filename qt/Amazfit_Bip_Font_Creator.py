@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import (QApplication, QDesktopWidget, QGridLayout, QGroupBo
 from PyQt5.QtGui import QIcon
 
 from qt.button import DonateButton, FullButton
-from qt.ttf2bmp import runtest
+from qt.ttf2bmp import *
 
 class FontCreator(QWidget):
     def __init__(self):
@@ -159,6 +159,7 @@ class FontCreator(QWidget):
     def create_font(self):
         print('run test from main')
         runtest()
+        create_bmp_range('..\\font\\d2.ttf')
 
 
         # TODO: 필요한 정보가 있는지 확인한다.

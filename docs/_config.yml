@@ -169,4 +169,4 @@ plugins:
   - jekyll-assets
   - jekyll-minifier
 
-theme: jekyll-material-theme
+remote_theme: jekyll-material-theme

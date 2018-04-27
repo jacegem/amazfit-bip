@@ -100,12 +100,13 @@ def create_bmp_range(ttf_path, directory_path):
     ttfont = TTFont(ttf_path)
     font = ImageFont.truetype(ttf_path, 15)
 
-    for i in range(all_range[0], all_range[1]):
-        result = char_in_font(chr(i), ttfont)
-        if result is False:
-            print('없음: {}'.format(i))
-            continue
-        create_bmp_one(i, font)
+    print('return before run')
+    # for i in range(all_range[0], all_range[1]):
+    #     result = char_in_font(chr(i), ttfont)
+    #     if result is False:
+    #         print('없음: {}'.format(i))
+    #         continue
+    #     create_bmp_one(i, font)
 
     #TODO: 생성이 끝나면, 폰트로 패킹한다.
     # pack(directory_path)
