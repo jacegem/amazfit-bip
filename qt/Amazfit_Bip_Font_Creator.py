@@ -11,7 +11,7 @@ from qt.ttf2bmp import runtest
 class FontCreator(QWidget):
     def __init__(self):
         super().__init__()
-        self.title = 'Amazfit BIP - Font Creator'
+        self.title = 'Amazfit Bip - Font Creator (v0.0.1)'
         self.left = 10
         self.top = 10
         self.width = 700

@@ -123,3 +123,19 @@ pyinstaller.exe --specpath c:\program.spec
 Thanks a ton for posting the solution. Helped me out a t
 ```
 
+
+```python
+It has worked, just a problem with cached icons. If you move the .exe to another folder the icon should change. Just to be sure though rebuild using :
+
+pyinstaller --onefile --icon=myicon.ico --clean yourapp.py
+The --clean command cleans the cache and your icon will appear correctly
+```
+
+```shell
+$ pyinstaller --onefile --clean --windowed --icon=font.ico Amazfit_Bip_Font_Creator.py
+
+add to spec file
+
+a.datas += [('.\\assets\\font.png', '.\\assets\\font.png', 'DATA')]
+```
+
