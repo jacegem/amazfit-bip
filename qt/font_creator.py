@@ -2,7 +2,7 @@ import sys
 import os
 
 from PyQt5.QtWidgets import (QApplication, QDesktopWidget, QGridLayout, QGroupBox, QWidget, QFileDialog, QLabel, QLineEdit, QMessageBox, QSpinBox,
-                             QPushButton)
+                             QPushButton, QStyleFactory)
 from PyQt5.QtGui import QIcon
 
 from qt.button import DonateButton, FullButton
@@ -201,8 +201,8 @@ def resource_path(relative_path):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    QApplication.setStyle(QStyleFactory.create('Fusion'))
+    print('Currently used style:', app.style().metaObject().className())
+    print('Available styles:', QStyleFactory.keys())
     creator = FontCreator()
     sys.exit(app.exec_())
-
-#TODO: venv 로 용량을 줄인다.
-
