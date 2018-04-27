@@ -2,7 +2,7 @@
 title: Amazfit Bip Font Creator
 description: Font Creator for Amazfit Bip (*.ft)
 cover: assets/images/amazfit_bip_smartwatch_kokoda_green_trench_coat.jpg
-logo: assets/images/amazfit_bip_smartwatch_onyx_black_hero.png
+logo: assets/images/logo.png
 favicon: assets/images/favicon.png
 baseurl: "/amazfit-bip/" # the subpath of your site, e.g. /blog/ or / for root
 url: "https://jacegem.github.io" # the base hostname & protocol for your site
