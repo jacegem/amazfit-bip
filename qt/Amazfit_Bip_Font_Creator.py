@@ -262,3 +262,6 @@ if __name__ == '__main__':
     print('Available styles:', QStyleFactory.keys())
     creator = AmazfitBipFontCreator()
     sys.exit(app.exec_())
+
+
+# changed
