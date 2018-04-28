@@ -1,14 +1,18 @@
 import sys
 import os
+import configparser
 
-from PyQt5.QtWidgets import (QApplication, QDesktopWidget, QGridLayout, QGroupBox, QWidget, QFileDialog, QLabel, QLineEdit, QMessageBox, QSpinBox,
-                             QPushButton, QStyleFactory)
+from PyQt5.QtWidgets import (QMainWindow, QApplication, QDesktopWidget, QGridLayout, QGroupBox, QWidget, QFileDialog, QLabel, QLineEdit, QMessageBox,
+                             QSpinBox,
+                             QPushButton, QStyleFactory, QHBoxLayout, QVBoxLayout, QCheckBox, QProgressBar)
 from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import pyqtSlot
 
 from qt.button import DonateButton, FullButton
-from qt.ttf2bmp import *
+from qt.bip_font_creator import FontCreator
 
-class FontCreator(QWidget):
+
+class AmazfitBipFontCreator(QMainWindow):
     def __init__(self):
         super().__init__()
         self.title = 'Amazfit Bip - Font Creator (v0.0.1)'
@@ -16,9 +20,27 @@ class FontCreator(QWidget):
         self.top = 10
         self.width = 700
         self.height = 300
+
+        self.lbl_ttf = None  # Font file name
+        self.chk_delete_bmp = None  # option delete bmp
+        self.chk_overwrite_bmp = None
+        self.lbl_prog = None
+        self.progress = None
+        self.sb_margin_top = None
+        self.sb_margin_left = None
+
         self.initUI()
         self.center()
 
+        self.config = configparser.ConfigParser()
+        self.config_file_name = 'font_creator.ini'
+        self.config.read(self.config_file_name)
+
+        try:
+            self.config_ttf = self.config['PATH']['ttf']
+            self.lbl_ttf.setText(self.config_ttf)
+        except:
+            print('error ini')
 
     def center(self):
         # geometry of the main window
@@ -31,97 +53,111 @@ class FontCreator(QWidget):
         self.move(qr.topLeft())
 
     def initUI(self):
+
         self.setWindowTitle(self.title)
         self.setMinimumWidth(self.width)
         self.setMinimumHeight(self.height)
 
-        self.setLayout(self.createGridLayout())
-        icon = QIcon(resource_path('assets/font.png'))
+        widget = QWidget()
+        widget.setLayout(self.get_layout())
+
+        self.setCentralWidget(widget)
+
+        icon = QIcon(self.resource_path('assets/font.png'))
         self.setWindowIcon(icon)
         self.show()
 
-    # Open an image file.
-    def open_file(self, ):
-        # Select the file dialog design.
-        dialog_style = QFileDialog.DontUseNativeDialog
-        dialog_style |= QFileDialog.DontUseCustomDirectoryIcons
+    def get_notice_box(self):
+        notice_box = QVBoxLayout()
+        notice_group = QGroupBox("Notice")
+        notice_box.addWidget(notice_group)
+        return notice_box
 
-        self.file_chosen = QFileDialog.getExistingDirectory(self, 'Open working directory', '.', QFileDialog.ShowDirsOnly)
-        # Open the file dialog to select an image file.
-        # self.file_chosen, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
-        #                                                   "TTF (*.ttf)",
-        #                                                   options=dialog_style)
+    def get_donate_box(self):
+        donate_box = QVBoxLayout()
+        donate_group = QGroupBox("Donate")
+        donate_layout = QVBoxLayout()
+        donate_layout.addWidget(DonateButton(1))
+        donate_layout.addWidget(DonateButton(5))
+        donate_layout.addWidget(DonateButton(10))
+        donate_group.setLayout(donate_layout)
+        donate_box.addWidget(donate_group)
+        return donate_box
 
-        # Show the path of the file chosen.
-        if self.file_chosen:
-            self.lb_ttf_file.setText(self.file_chosen)
-            # Change the text on the label to display the file path chosen.
-        else:
-            self.lb_ttf_file.setText("No file was selected. Please select an image.")
-            # Change the text on the label to say that "No file was selected. Please select an image."
-            # This 'else' statement is used to catch the case where the user presses 'Cancel' after opening the file dialog,
-            # which will close the file dialog without choosing any file, even if they had already previously chosen a file
-            # from previously opening the file dialog.
+    def get_create_box(self):
+        create_box = QVBoxLayout()
+        create_group = QGroupBox('Create')
+        create_layout = QVBoxLayout()
 
-    def createGridLayout(self):
+        # TTF 선택 라벨, 버튼
+        row_ttf = QHBoxLayout()
 
-        containerGrid = QGridLayout()
+        self.lbl_ttf = QLineEdit('No file selected')
+        self.lbl_ttf.setDisabled(True)
+        self.lbl_ttf.setMinimumWidth(300)
+        row_ttf.addWidget(self.lbl_ttf)
 
-        noticeLayout = QGridLayout()
-        noticeGroupBox = QGroupBox("Notice")
-        noticeGroupBox.setLayout(noticeLayout)
-        containerGrid.addWidget(noticeGroupBox, 0, 0)
+        btn_ttf = QPushButton('Select TTF file')
+        btn_ttf.clicked.connect(lambda: self.select_file(self.lbl_ttf))
+        row_ttf.addWidget(btn_ttf)
 
-        donate1 = DonateButton(1)
-        donate5 = DonateButton(5)
-        donate10 = DonateButton(10)
+        # margin-top, margin-left
+        row_margin = QHBoxLayout()
+        row_margin.addWidget(QLabel('Margin-Top:'))
+        self.sb_margin_top = QSpinBox()
+        self.sb_margin_top.setMinimum(-99)
+        row_margin.addWidget(self.sb_margin_top)
 
-        donateLayout = QGridLayout()
-        donateLayout.addWidget(donate1, 0, 0)
-        donateLayout.addWidget(donate5, 1, 0)
-        donateLayout.addWidget(donate10, 2, 0)
-        donateGroupBox = QGroupBox("Donate")
-        donateGroupBox.setLayout(donateLayout)
-        containerGrid.addWidget(donateGroupBox, 0, 1)
+        row_margin.addWidget(QLabel('Margin-Left:'))
+        self.sb_margin_left = QSpinBox()
+        self.sb_margin_left.setMinimum(-99)
+        row_margin.addWidget(self.sb_margin_left)
 
-        createGroupBox = QGroupBox("Create")
-        createLayout = QGridLayout()
+        # 옵션들
+        row_option = QHBoxLayout()
+        self.chk_delete_bmp = QCheckBox('Delete BMP files')
+        self.chk_delete_bmp.setChecked(True)
+        row_option.addWidget(self.chk_delete_bmp)
+        self.chk_overwrite_bmp = QCheckBox('Overwrite BMP files')
+        row_option.addWidget(self.chk_overwrite_bmp)
 
-        self.lb_ttf_file = QLineEdit('No file selected')
-        self.lb_ttf_file.setDisabled(True)
-        self.lb_ttf_file.setMinimumWidth(300)
-        createLayout.addWidget(self.lb_ttf_file, 1, 0, 1, 3)
+        # create 버튼
+        row_create = QHBoxLayout()
+        self.btn_create = FullButton('Font File Create')
+        self.btn_create.clicked.connect(self.create_font)
+        row_create.addWidget(self.btn_create)
 
-        btn_select_ttf = QPushButton('Select TTF file')
-        btn_select_ttf.clicked.connect(lambda: self.select_file(self.lb_ttf_file))
-        createLayout.addWidget(btn_select_ttf, 1, 3, 1, 2)
+        # 전체 순서 결정
+        create_layout.addLayout(row_ttf)
+        create_layout.addLayout(row_margin)
+        create_layout.addLayout(row_option)
+        create_layout.addLayout(row_create)
 
-        createLayout.addWidget(QLabel('Margin-Top:'), 2, 0)
-        sb_margin_top = QSpinBox()
-        sb_margin_top.setMinimum(-99)
-        createLayout.addWidget(sb_margin_top, 2, 1)
+        # set layer
+        create_group.setLayout(create_layout)
+        create_box.addWidget(create_group)
+        return create_box
 
-        createLayout.addWidget(QLabel('Margin-Left:'), 2, 3)
-        sb_margin_left = QSpinBox()
-        sb_margin_left.setMinimum(-99)
-        createLayout.addWidget(sb_margin_left, 2, 4)
+    def get_layout(self):
 
-        self.lb_directory = QLineEdit('No Directory selected')
-        self.lb_directory.setDisabled(True)
-        createLayout.addWidget(self.lb_directory, 3, 0, 1, 3)
+        layout = QVBoxLayout()
 
-        btn_select_folder = QPushButton('Select ft Directory')
-        btn_select_folder.clicked.connect(lambda: self.select_folder(self.lb_directory))
-        createLayout.addWidget(btn_select_folder, 3, 3, 1, 2)
+        row_ctrl = QHBoxLayout()
+        row_ctrl.addLayout(self.get_notice_box())
+        row_ctrl.addLayout(self.get_donate_box())
+        row_ctrl.addLayout(self.get_create_box())
 
-        btn_create = FullButton('Font File Create')
-        btn_create.clicked.connect(self.create_font)
-        createLayout.addWidget(btn_create, 4, 0, 1, 5)
+        row_prog = QHBoxLayout()
+        self.lbl_prog = QLabel('Done')
+        row_prog.addWidget(self.lbl_prog)
+        self.progress = QProgressBar()
+        self.progress.setMaximum(100)
+        self.progress.setMinimum(0)
+        row_prog.addWidget(self.progress)
 
-        createGroupBox.setLayout(createLayout)
-        containerGrid.addWidget(createGroupBox, 0, 2)
-
-        return containerGrid
+        layout.addLayout(row_ctrl)
+        layout.addLayout(row_prog)
+        return layout
 
     def select_file(self, target):
         # Select the file dialog design.
@@ -129,81 +165,77 @@ class FontCreator(QWidget):
         dialog_style |= QFileDialog.DontUseCustomDirectoryIcons
 
         # Open the file dialog to select an image file.
-        self.file_chosen, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
-                                                          "TTF (*.ttf)",
-                                                          options=dialog_style)
+        file_chosen, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "", "TTF (*.ttf)")
 
         # Show the path of the file chosen.
-        if self.file_chosen:
-            target.setText(self.file_chosen)
-            # Change the text on the label to display the file path chosen.
+        if file_chosen:
+            target.setText(file_chosen)
         else:
-            target.setText("No file was selected. Please select an image.")
-            # Change the text on the label to say that "No file was selected. Please select an image."
-            # This 'else' statement is used to catch the case where the user presses 'Cancel' after opening the file dialog,
-            # which will close the file dialog without choosing any file, even if they had already previously chosen a file
-            # from previously opening the file dialog.
-        pass
+            target.setText("No file was selected. Please select an TTF.")
 
     def select_folder(self, target):
         dialog_style = QFileDialog.DontUseNativeDialog
         dialog_style |= QFileDialog.DontUseCustomDirectoryIcons
 
-        self.file_chosen = QFileDialog.getExistingDirectory(self, 'Open working directory', '.', QFileDialog.ShowDirsOnly)
+        file_chosen = QFileDialog.getExistingDirectory(self, 'Open working directory', '.', QFileDialog.ShowDirsOnly)
 
-        if self.file_chosen:
-            target.setText(self.file_chosen)
+        if file_chosen:
+            target.setText(file_chosen)
         else:
             target.setText("No file was selected. Please select an image.")
 
     def create_font(self):
         print('run test from main')
-        runtest()
-        create_bmp_range('..\\font\\d2.ttf')
+        font_path = self.lbl_ttf.text()
+        delete_bmp = self.chk_delete_bmp.isChecked()
+        overwrite_bmp = self.chk_overwrite_bmp.isChecked()
+        margin_top = self.sb_margin_top.text()
+        margin_left = self.sb_margin_left.text()
 
+        if not font_path.lower().endswith('.ttf'):
+            msg_box = QMessageBox()
+            msg_box.setText("Please Select TTF File")
+            msg_box.exec()
+            return
 
-        # TODO: 필요한 정보가 있는지 확인한다.
-        # 폰트파일, 압축해제폴더, 패킹파일위치, 패킹파일명,
-        # self.font_path
-        # self.bmp_path
-        # self.pack_path
-        # self.pack_file_name
-        # # 옵션, BMP 폴더 삭제, 기존 파일 덮어쓰기
-        # self.delete_bmp_folder
-        # self.overwrite_bmp_file
+        self.config['PATH'] = {}
+        self.config['PATH']['ttf'] = font_path
+        with open(self.config_file_name, 'w') as configfile:
+            self.config.write(configfile)
 
-        # TODO: run thread, and disable other buttons.
-        # TODO: when it finished, enable buttons.
+        self.btn_create.setEnabled(False)
+        self.set_progress_text('Start!')
 
+        font_creator_thread = FontCreator(font_path, margin_top, margin_left, delete_bmp, overwrite_bmp, self)
+        font_creator_thread.set_progress_text.connect(self.set_progress_text)
+        font_creator_thread.set_progress.connect(self.set_progress)
+        font_creator_thread.done.connect(self.create_done)
+        font_creator_thread.start()
 
-    #     self.showdialog()
-    #
-    # def showdialog(self):
-    #     msg = QMessageBox()
-    #     msg.setIcon(QMessageBox.Information)
-    #
-    #     msg.setText("Start to creat Font file for Amazfit bip")
-    #     msg.setInformativeText("This is additional information")
-    #     msg.setWindowTitle("MessageBox demo")
-    #     msg.setDetailedText("The details are as follows:")
-    #     msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-    #     msg.buttonClicked.connect(self.msgbtn)
-    #
-    #     retval = msg.exec_()
-    #     print("value of pressed message box button:", retval)
-    #
-    # def msgbtn(self, i):
-    #     print("Button pressed is:", i.text())
+    @pyqtSlot(str)
+    def set_progress_text(self, text):
+        self.lbl_prog.setText(text)
 
-def resource_path(relative_path):
-    if hasattr(sys, '_MEIPASS'):
-        return os.path.join(sys._MEIPASS, relative_path)
-    return os.path.join(os.path.abspath("."), relative_path)
+    @pyqtSlot()
+    def create_done(self):
+        self.set_progress_text('Finished')
+        self.btn_create.setEnabled(True)
+
+    @pyqtSlot(int, int)
+    def set_progress(self, current, end):
+        val = current / end * 100
+        self.progress.setValue(int(val))
+
+    def resource_path(self, relative_path):
+        if hasattr(sys, '_MEIPASS'):
+            return os.path.join(sys._MEIPASS, relative_path)
+        return os.path.join(os.path.abspath("."), relative_path)
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     QApplication.setStyle(QStyleFactory.create('Fusion'))
     print('Currently used style:', app.style().metaObject().className())
     print('Available styles:', QStyleFactory.keys())
-    creator = FontCreator()
+    creator = AmazfitBipFontCreator()
     sys.exit(app.exec_())

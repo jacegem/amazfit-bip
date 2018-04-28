@@ -134,9 +134,15 @@ The --clean command cleans the cache and your icon will appear correctly
 ```shell
 $ pyinstaller --onefile --clean --windowed --icon=font.ico Amazfit_Bip_Font_Creator.py
 $ pyinstaller --onefile --clean --windowed --icon=.\assets\font.ico --add-data ".\assets\font.png;.\assets\font.png" Amazfit_Bip_Font_Creator.py
+$ pyinstaller --onefile --clean --windowed --icon=.\assets\font.ico Amazfit_Bip_Font_Creator.py
 
 add to spec file
 
 a.datas += [('.\\assets\\font.png', '.\\assets\\font.png', 'DATA')]
 ```
 
+
+## threading
+
+- https://nikolak.com/pyqt-threading-tutorial/
+- http://freeprog.tistory.com/351
