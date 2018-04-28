@@ -12,7 +12,7 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-#dist/
+dist/
 downloads/
 eggs/
 .eggs/
@@ -101,4 +101,4 @@ ENV/
 .mypy_cache/
 
 .idea
-font/bmp*
+bmp/

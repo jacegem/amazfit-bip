@@ -7,7 +7,7 @@ class DonateButton(QPushButton):
     def __init__(self, dollar):
         title = '${}'.format(dollar)
         super().__init__(title)
-        super().setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        # super().setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         super().clicked.connect(lambda: self.open_donate(dollar))
 
     def open_donate(self, dollar):

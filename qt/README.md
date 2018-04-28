@@ -146,3 +146,16 @@ a.datas += [('.\\assets\\font.png', '.\\assets\\font.png', 'DATA')]
 
 - https://nikolak.com/pyqt-threading-tutorial/
 - http://freeprog.tistory.com/351
+
+## Could not find QtWebEngineProcess
+
+https://github.com/pyinstaller/pyinstaller/issues/3308
+
+
+## pyinstaller uninstall
+
+```python
+➜  qt git:(master) ✗ pyinstaller -v
+3.4.dev0+a617a4eb8
+```
+

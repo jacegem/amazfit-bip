@@ -6,16 +6,19 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QDesktopWidget, QGridLay
                              QSpinBox,
                              QPushButton, QStyleFactory, QHBoxLayout, QVBoxLayout, QCheckBox, QProgressBar)
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, QUrl
+
+from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage, QWebEngineSettings
 
 from qt.button import DonateButton, FullButton
 from qt.bip_font_creator import FontCreator
+from qt.my_browser import MyBrowser
 
 
 class AmazfitBipFontCreator(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.title = 'Amazfit Bip - Font Creator (v0.0.1)'
+        self.title = 'Amazfit Bip - Font Creator (v0.1)'
         self.left = 10
         self.top = 10
         self.width = 700
@@ -32,8 +35,15 @@ class AmazfitBipFontCreator(QMainWindow):
         self.initUI()
         self.center()
 
+        if hasattr(sys, '_MEIPASS'):
+            # self.root_path = os.path.dirname(sys.executable)
+            self.root_path = os.path.dirname(sys.argv[0])
+        else:
+            self.root_path = os.path.dirname(os.path.abspath(__file__))
+
         self.config = configparser.ConfigParser()
-        self.config_file_name = 'font_creator.ini'
+        self.config_file_name = os.path.join(self.root_path, 'font_creator.ini')
+        print('config_file_name: ', self.config_file_name)
         self.config.read(self.config_file_name)
 
         try:
@@ -69,14 +79,20 @@ class AmazfitBipFontCreator(QMainWindow):
 
     def get_notice_box(self):
         notice_box = QVBoxLayout()
-        notice_group = QGroupBox("Notice")
-        notice_box.addWidget(notice_group)
+
+        web = QWebEngineView(self)
+        # web.setUrl(QUrl('https://jacegem.github.io/amazfit-bip'))
+        web.load(QUrl('https://jacegem.github.io/amazfit-bip'))
+        notice_box.addWidget(web)
+
+        # notice_group = QGroupBox("Notice")
+        # notice_box.addWidget(notice_group)
         return notice_box
 
     def get_donate_box(self):
         donate_box = QVBoxLayout()
         donate_group = QGroupBox("Donate")
-        donate_layout = QVBoxLayout()
+        donate_layout = QHBoxLayout()
         donate_layout.addWidget(DonateButton(1))
         donate_layout.addWidget(DonateButton(5))
         donate_layout.addWidget(DonateButton(10))
@@ -123,7 +139,10 @@ class AmazfitBipFontCreator(QMainWindow):
 
         # create 버튼
         row_create = QHBoxLayout()
-        self.btn_create = FullButton('Font File Create')
+        self.btn_create = FullButton('''Font File Create
+        
+        *.ft file will be created in the ft sub-folder'''
+                                     )
         self.btn_create.clicked.connect(self.create_font)
         row_create.addWidget(self.btn_create)
 
@@ -142,21 +161,24 @@ class AmazfitBipFontCreator(QMainWindow):
 
         layout = QVBoxLayout()
 
-        row_ctrl = QHBoxLayout()
-        row_ctrl.addLayout(self.get_notice_box())
-        row_ctrl.addLayout(self.get_donate_box())
-        row_ctrl.addLayout(self.get_create_box())
+        hbox_content = QHBoxLayout()
+        # hbox_content.addLayout(self.get_notice_box())
 
-        row_prog = QHBoxLayout()
+        vbox_create = QVBoxLayout()
+        vbox_create.addLayout(self.get_create_box())
+        vbox_create.addLayout(self.get_donate_box())
+        hbox_content.addLayout(vbox_create)
+
+        hbox_progress = QHBoxLayout()
         self.lbl_prog = QLabel('Done')
-        row_prog.addWidget(self.lbl_prog)
+        hbox_progress.addWidget(self.lbl_prog)
         self.progress = QProgressBar()
         self.progress.setMaximum(100)
         self.progress.setMinimum(0)
-        row_prog.addWidget(self.progress)
+        hbox_progress.addWidget(self.progress)
 
-        layout.addLayout(row_ctrl)
-        layout.addLayout(row_prog)
+        layout.addLayout(hbox_content)
+        layout.addLayout(hbox_progress)
         return layout
 
     def select_file(self, target):
@@ -206,7 +228,7 @@ class AmazfitBipFontCreator(QMainWindow):
         self.btn_create.setEnabled(False)
         self.set_progress_text('Start!')
 
-        font_creator_thread = FontCreator(font_path, margin_top, margin_left, delete_bmp, overwrite_bmp, self)
+        font_creator_thread = FontCreator(font_path, margin_top, margin_left, delete_bmp, overwrite_bmp, self.root_path, self)
         font_creator_thread.set_progress_text.connect(self.set_progress_text)
         font_creator_thread.set_progress.connect(self.set_progress)
         font_creator_thread.done.connect(self.create_done)
@@ -219,6 +241,7 @@ class AmazfitBipFontCreator(QMainWindow):
     @pyqtSlot()
     def create_done(self):
         self.set_progress_text('Finished')
+        self.set_progress(1, 1)
         self.btn_create.setEnabled(True)
 
     @pyqtSlot(int, int)

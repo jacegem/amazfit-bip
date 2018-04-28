@@ -22,7 +22,7 @@ class FontCreator(QThread):
     set_progress = pyqtSignal(int, int)
     done = pyqtSignal()
 
-    def __init__(self, font_path, margin_top, margin_left, delete_bmp, overwrite_bmp, parent=None):
+    def __init__(self, font_path, margin_top, margin_left, delete_bmp, overwrite_bmp, root_path, parent=None):
         QThread.__init__(self, parent)
         self.font_path = font_path
         self.margin_top = int(margin_top)
@@ -32,20 +32,20 @@ class FontCreator(QThread):
 
         self.tt_font = TTFont(self.font_path)
         self.image_font = ImageFont.truetype(self.font_path, 15)
-        self.root_path = os.path.dirname(os.path.abspath(__file__))
+        self.root_path = root_path
 
         self.bmp_dir = None
         self.ft_dir = None
-        self.create_directory()
+        self.bmp_dir = self.create_directory('bmp')
+        self.ft_dir = self.create_directory('ft')
 
-    def create_directory(self):
-        self.bmp_dir = os.path.join(self.root_path, 'bmp')
-        if not os.path.exists(self.bmp_dir):
-            os.makedirs(self.bmp_dir)
+    def create_directory(self, path):
+        dir = os.path.join(self.root_path, path)
+        print('dir:', dir)
+        if not os.path.exists(dir):
+            os.makedirs(dir)
 
-        self.ft_dir = os.path.join(self.root_path, 'ft')
-        if not os.path.exists(self.ft_dir):
-            os.makedirs(self.ft_dir)
+        return dir
 
     def __del__(self):
         self.wait()
@@ -63,7 +63,7 @@ class FontCreator(QThread):
 
             result = self.char_in_font(chr(i), self.tt_font)
             if result is False:
-                print('없음: {}'.format(i))
+                # print('없음: {}'.format(i))
                 continue
 
             image = Image.new('1', (16, 16), "black")
@@ -74,7 +74,9 @@ class FontCreator(QThread):
                 print("{:04x} is black".format(i))
                 continue
 
-            file_path = "bmp/{:04x}2.bmp".format(i)
+            file_name = "bmp/{:04x}2.bmp".format(i)
+            file_path = os.path.join(self.root_path, file_name)
+
             if self.overwrite_bmp:
                 if os.path.isfile(file_path):
                     continue
@@ -85,6 +87,7 @@ class FontCreator(QThread):
         base = os.path.basename(self.font_path)
         file, ext = os.path.splitext(base)
         ft_file_name = 'amazfit_bip_{}.ft'.format(file)
+        print('ft_file_name', ft_file_name)
         ft_path = os.path.join(self.ft_dir, ft_file_name)
         self.pack_font(ft_path)
 
@@ -99,22 +102,23 @@ class FontCreator(QThread):
         seq_nr = 0
         startrange = -1
 
-        bmp_files = sorted(glob.glob('bmp' + os.sep + '*'))
+        bmp_files = sorted(glob.glob(os.path.join(self.root_path, 'bmp' + os.sep + '*')))
         bmp_len = len(bmp_files)
+        path_len = len(self.root_path) + 1
 
         for i in range(0, bmp_len):
             print('pack_font', i, bmp_len)
             self.set_progress.emit(i, bmp_len)
 
-            margin_top = int(bmp_files[i][8])
+            margin_top = int(bmp_files[i][path_len + 8])
 
             if (i == 0):
-                unicode = int(bmp_files[i][4:-5], 16)
+                unicode = int(bmp_files[i][path_len + 4:-5], 16)
             else:
                 unicode = next_unicode
 
             if (i + 1 < len(bmp_files)):
-                next_unicode = int(bmp_files[i + 1][4:-5], 16)
+                next_unicode = int(bmp_files[i + 1][path_len + 4:-5], 16)
             else:
                 next_unicode = -1
 
