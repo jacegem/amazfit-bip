@@ -81,6 +81,8 @@ layout: default
       {{content}}
     </div>
 
+          {%- include adsense-auto.html -%}
+
     <!-- Start Related article -->
 
     {% if page.tags.size > 0 %}
@@ -150,7 +152,6 @@ layout: default
   <amp-social-share type="email" aria-label="Share this with E-mail"></amp-social-share>
 </div>
 <!-- End Socialbox -->
-
 
   {% include footer.html %}
 

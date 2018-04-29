@@ -6,7 +6,7 @@ logo: assets/images/amazfit_bip_smartwatch_onyx_black_hero.png
 favicon: assets/images/favicon.png
 baseurl: "/amazfit-bip/" # the subpath of your site, e.g. /blog/ or / for root
 url: "https://jacegem.github.io" # the base hostname & protocol for your site
-paginate: 100 # The number of posts to show per page on your homepage
+paginate: 5 # The number of posts to show per page on your homepage
 
 # Social
 facebook: facebook
