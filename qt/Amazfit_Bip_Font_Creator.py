@@ -42,7 +42,7 @@ class AmazfitBipFontCreator(QMainWindow):
             self.root_path = os.path.dirname(os.path.abspath(__file__))
 
         self.config = configparser.ConfigParser()
-        self.config_file_name = os.path.join(self.root_path, 'font_creator.ini')
+        self.config_file_name = os.path.join(self.root_path, 'config.ini')
         print('config_file_name: ', self.config_file_name)
         self.config.read(self.config_file_name)
 
@@ -243,6 +243,10 @@ class AmazfitBipFontCreator(QMainWindow):
         self.set_progress_text('Finished')
         self.set_progress(1, 1)
         self.btn_create.setEnabled(True)
+        msg = QMessageBox()
+        msg.setText('Finished')
+        # TODO: 완료 메시지 보이기, 폴더 열기 링크 제공 [Open Explorer] [OK]
+
 
     @pyqtSlot(int, int)
     def set_progress(self, current, end):

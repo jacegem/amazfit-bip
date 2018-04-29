@@ -159,3 +159,5 @@ https://github.com/pyinstaller/pyinstaller/issues/3308
 3.4.dev0+a617a4eb8
 ```
 
+
+- [ ] 완료 메시지 박스 보이기
