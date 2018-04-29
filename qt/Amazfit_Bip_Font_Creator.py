@@ -1,6 +1,7 @@
 import sys
 import os
 import configparser
+import webbrowser
 
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QDesktopWidget, QGridLayout, QGroupBox, QWidget, QFileDialog, QLabel, QLineEdit, QMessageBox,
                              QSpinBox,
@@ -12,7 +13,6 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage, QWebEngineS
 
 from qt.button import DonateButton, FullButton
 from qt.bip_font_creator import FontCreator
-from qt.my_browser import MyBrowser
 
 
 class AmazfitBipFontCreator(QMainWindow):
@@ -90,7 +90,12 @@ class AmazfitBipFontCreator(QMainWindow):
         return notice_box
 
     def get_donate_box(self):
-        donate_box = QVBoxLayout()
+        donate_box = QHBoxLayout()
+
+        btn_home = QPushButton('Visit Homepage')
+        btn_home.clicked.connect(self.open_home)
+        donate_box.addWidget(btn_home)
+
         donate_group = QGroupBox("Donate")
         donate_layout = QHBoxLayout()
         donate_layout.addWidget(DonateButton(1))
@@ -238,15 +243,21 @@ class AmazfitBipFontCreator(QMainWindow):
     def set_progress_text(self, text):
         self.lbl_prog.setText(text)
 
+    def open_home(self):
+        webbrowser.open('https://jacegem.github.io/amazfit-bip')
+
     @pyqtSlot()
     def create_done(self):
         self.set_progress_text('Finished')
         self.set_progress(1, 1)
         self.btn_create.setEnabled(True)
-        msg = QMessageBox()
-        msg.setText('Finished')
+        msg_box = QMessageBox()
+        msg_box.setText('Finished')
         # TODO: 완료 메시지 보이기, 폴더 열기 링크 제공 [Open Explorer] [OK]
-
+        msg_box.addButton(QPushButton('OK'), QMessageBox.NoRole)
+        # msg_box.addButton(QPushButton('Open File'), QMessageBox.YesRole)
+        # msg_box.buttonClicked.connect(self.button_click)
+        msg_box.exec()
 
     @pyqtSlot(int, int)
     def set_progress(self, current, end):
@@ -268,4 +279,4 @@ if __name__ == '__main__':
     sys.exit(app.exec_())
 
 
-# changed
+    # changed
