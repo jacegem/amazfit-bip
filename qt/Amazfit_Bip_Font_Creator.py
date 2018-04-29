@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QDesktopWidget, QGridLay
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, QUrl
 
-from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage, QWebEngineSettings
+# from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage, QWebEngineSettings
 
 from qt.button import DonateButton, FullButton
 from qt.bip_font_creator import FontCreator
@@ -252,6 +252,7 @@ class AmazfitBipFontCreator(QMainWindow):
         self.set_progress(1, 1)
         self.btn_create.setEnabled(True)
         msg_box = QMessageBox()
+        msg_box.setWindowTitle('Font Creator')
         msg_box.setText('Finished')
         # TODO: 완료 메시지 보이기, 폴더 열기 링크 제공 [Open Explorer] [OK]
         msg_box.addButton(QPushButton('OK'), QMessageBox.NoRole)

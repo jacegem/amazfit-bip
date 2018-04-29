@@ -2,3 +2,4 @@ pyqt5
 pillow
 fontTools
 pypiwin32
+pyinstaller
