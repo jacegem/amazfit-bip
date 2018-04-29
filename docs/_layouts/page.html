@@ -7,12 +7,16 @@ layout: default
       <h1 class="post-title">{{ page.title }}</h1>
     </div>
 
+    {%- include adsense.html -%}
+
+
     <section class="post-content">
       <a name="topofpage"></a>
       {{content}}
     </section>
   </article>
 
+  {%- include adsense.html -%}
 
 </main>
 

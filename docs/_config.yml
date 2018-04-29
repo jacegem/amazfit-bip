@@ -43,7 +43,7 @@ repo: https://github.com/jacegem #github repository
 branch: master #branch
 relative_source: ../hanuman/ #source directory
 destination: ../hanuman-pages/ #destination directory
-production_url:  https://samanyougarg.com/
+production_url:  https://github.com/jacegem/amazfit-bip
 source_url:  https://github.com/jacegem/amazfit-bip #source repository url
 
 exclude:
