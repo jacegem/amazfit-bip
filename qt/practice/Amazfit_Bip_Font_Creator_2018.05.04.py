@@ -3,7 +3,7 @@ import os
 import sys
 import webbrowser
 
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, QUrl
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QDesktopWidget, QGroupBox, QWidget, QFileDialog, QLabel, QLineEdit, QMessageBox,
                              QSpinBox, QPushButton, QStyleFactory, QHBoxLayout, QVBoxLayout, QCheckBox, QProgressBar)
@@ -76,6 +76,18 @@ class AmazfitBipFontCreator(QMainWindow):
         icon = QIcon(self.resource_path('assets/font.png'))
         self.setWindowIcon(icon)
         self.show()
+
+    def get_notice_box(self):
+        notice_box = QVBoxLayout()
+
+        web = QWebEngineView(self)
+        # web.setUrl(QUrl('https://jacegem.github.io/amazfit-bip'))
+        web.load(QUrl('https://jacegem.github.io/amazfit-bip'))
+        notice_box.addWidget(web)
+
+        # notice_group = QGroupBox("Notice")
+        # notice_box.addWidget(notice_group)
+        return notice_box
 
     def get_donate_box(self):
         donate_box = QHBoxLayout()
@@ -155,6 +167,7 @@ class AmazfitBipFontCreator(QMainWindow):
         layout = QVBoxLayout()
 
         hbox_content = QHBoxLayout()
+        # hbox_content.addLayout(self.get_notice_box())
 
         vbox_create = QVBoxLayout()
         vbox_create.addLayout(self.get_create_box())
