@@ -1,13 +1,22 @@
 # Amazfit Bip Fonts and WatchFaces
 
-https://stackoverflow.com/questions/45100018/increase-height-of-qpushbutton-in-pyqt
+## Font Creator v0.1
 
-```shell
-$ git remote -v
- 	# View existing remotes
-origin  https://github.com/user/repo.git (fetch)
-origin  https://github.com/user/repo.git (push)
+Amazfit Bip 을 위한 폰트파일을 생성하는 프로그램입니다. 
 
-$ git remote set-url origin https://github.com/user/repo2.git
-# Change the 'origin' remote's URL
-```
+![](https://goo.gl/ZwoBtY)
+
+
+1. `Select TTF file` 버튼을 눌러서 폰트파일을 선택합니다. 
+
+2. `Font File Create` 버튼을 눌러 폰트 파일을 생성합니다.
+
+3. `ft 폴더`에 폰트가 생성됩니다. 
+
+
+## Download
+
+- Windows : <https://goo.gl/v9r4jz>
+- Mac : <https://goo.gl/2jRXHR>
+
+
